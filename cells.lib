@@ -1,0 +1,129 @@
+* ============================================================
+* Standard Cell Library — SKY130 TT Corner
+* ============================================================
+
+* ── Inverter Family ─────────────────────────────────────────
+
+.subckt invx1 A Y VDD VSS
+XMN Y A VSS VSS sky130_fd_pr__nfet_01v8 w=0.42 l=0.15
+XMP Y A VDD VDD sky130_fd_pr__pfet_01v8 w=1.00 l=0.15
+.ends invx1
+
+.subckt invx2 A Y VDD VSS
+XMN Y A VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMP Y A VDD VDD sky130_fd_pr__pfet_01v8 w=2.00 l=0.15
+.ends invx2
+
+.subckt invx4 A Y VDD VSS
+XMN Y A VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMP Y A VDD VDD sky130_fd_pr__pfet_01v8 w=4.00 l=0.15
+.ends invx4
+
+.subckt invx8 A Y VDD VSS
+XMN Y A VSS VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMP Y A VDD VDD sky130_fd_pr__pfet_01v8 w=8.00 l=0.15
+.ends invx8
+
+* ── NAND2 Family ─────────────────────────────────────────────
+* Pull-down: 2 NMOS in series (A top, B bottom)
+* Pull-up:   2 PMOS in parallel
+
+.subckt nand2x1 A B Y VDD VSS
+XMN1 Y  A  mid VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN2 mid B  VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMP1 Y  A  VDD VDD sky130_fd_pr__pfet_01v8 w=1.00 l=0.15
+XMP2 Y  B  VDD VDD sky130_fd_pr__pfet_01v8 w=1.00 l=0.15
+.ends nand2x1
+
+.subckt nand2x2 A B Y VDD VSS
+XMN1 Y  A  mid VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN2 mid B  VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMP1 Y  A  VDD VDD sky130_fd_pr__pfet_01v8 w=2.00 l=0.15
+XMP2 Y  B  VDD VDD sky130_fd_pr__pfet_01v8 w=2.00 l=0.15
+.ends nand2x2
+
+.subckt nand2x4 A B Y VDD VSS
+XMN1 Y  A  mid VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMN2 mid B  VSS VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMP1 Y  A  VDD VDD sky130_fd_pr__pfet_01v8 w=4.00 l=0.15
+XMP2 Y  B  VDD VDD sky130_fd_pr__pfet_01v8 w=4.00 l=0.15
+.ends nand2x4
+
+* ── NOR2 Family ──────────────────────────────────────────────
+* Pull-up:   2 PMOS in series
+* Pull-down: 2 NMOS in parallel
+
+.subckt nor2x1 A B Y VDD VSS
+XMP1 mid A  VDD VDD sky130_fd_pr__pfet_01v8 w=2.00 l=0.15
+XMP2 Y   B  mid mid sky130_fd_pr__pfet_01v8 w=2.00 l=0.15
+XMN1 Y   A  VSS VSS sky130_fd_pr__nfet_01v8 w=0.42 l=0.15
+XMN2 Y   B  VSS VSS sky130_fd_pr__nfet_01v8 w=0.42 l=0.15
+.ends nor2x1
+
+.subckt nor2x2 A B Y VDD VSS
+XMP1 mid A  VDD VDD sky130_fd_pr__pfet_01v8 w=4.00 l=0.15
+XMP2 Y   B  mid mid sky130_fd_pr__pfet_01v8 w=4.00 l=0.15
+XMN1 Y   A  VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN2 Y   B  VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+.ends nor2x2
+
+.subckt nor2x4 A B Y VDD VSS
+XMP1 mid A  VDD VDD sky130_fd_pr__pfet_01v8 w=8.00 l=0.15
+XMP2 Y   B  mid mid sky130_fd_pr__pfet_01v8 w=8.00 l=0.15
+XMN1 Y   A  VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN2 Y   B  VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+.ends nor2x4
+
+* ── MAJ3 Family  (AOI: Y = NOT(AB + BC + AC)) ────────────
+* Pull-down: 3 parallel branches, each 2 NMOS in series
+* Pull-up  : 3 series stages, each 2 PMOS in parallel
+*            Stage1: VDD->[A||B]->m1, Stage2: m1->[B||C]->m2, Stage3: m2->[A||C]->Y
+
+.subckt maj3x1 A B C Y VDD VSS
+* Pull-down
+XMN_AB1 Y   A mAB VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN_AB2 mAB B VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN_BC1 Y   B mBC VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN_BC2 mBC C VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN_AC1 Y   A mAC VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+XMN_AC2 mAC C VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+* Pull-up stage 1: VDD -> m1 (A||B)
+XMP_A1  m1  A VDD VDD sky130_fd_pr__pfet_01v8 w=2.50 l=0.15
+XMP_B1  m1  B VDD VDD sky130_fd_pr__pfet_01v8 w=2.50 l=0.15
+* Pull-up stage 2: m1 -> m2 (B||C)  bulk=VDD
+XMP_B2  m2  B m1  VDD sky130_fd_pr__pfet_01v8 w=2.50 l=0.15
+XMP_C1  m2  C m1  VDD sky130_fd_pr__pfet_01v8 w=2.50 l=0.15
+* Pull-up stage 3: m2 -> Y  (A||C)  bulk=VDD
+XMP_A2  Y   A m2  VDD sky130_fd_pr__pfet_01v8 w=2.50 l=0.15
+XMP_C2  Y   C m2  VDD sky130_fd_pr__pfet_01v8 w=2.50 l=0.15
+.ends maj3x1
+
+.subckt maj3x2 A B C Y VDD VSS
+XMN_AB1 Y   A mAB VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN_AB2 mAB B VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN_BC1 Y   B mBC VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN_BC2 mBC C VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN_AC1 Y   A mAC VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMN_AC2 mAC C VSS VSS sky130_fd_pr__nfet_01v8 w=1.68 l=0.15
+XMP_A1  m1  A VDD VDD sky130_fd_pr__pfet_01v8 w=5.00 l=0.15
+XMP_B1  m1  B VDD VDD sky130_fd_pr__pfet_01v8 w=5.00 l=0.15
+XMP_B2  m2  B m1  VDD sky130_fd_pr__pfet_01v8 w=5.00 l=0.15
+XMP_C1  m2  C m1  VDD sky130_fd_pr__pfet_01v8 w=5.00 l=0.15
+XMP_A2  Y   A m2  VDD sky130_fd_pr__pfet_01v8 w=5.00 l=0.15
+XMP_C2  Y   C m2  VDD sky130_fd_pr__pfet_01v8 w=5.00 l=0.15
+.ends maj3x2
+
+.subckt maj3x4 A B C Y VDD VSS
+XMN_AB1 Y   A mAB VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMN_AB2 mAB B VSS VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMN_BC1 Y   B mBC VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMN_BC2 mBC C VSS VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMN_AC1 Y   A mAC VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMN_AC2 mAC C VSS VSS sky130_fd_pr__nfet_01v8 w=3.36 l=0.15
+XMP_A1  m1  A VDD VDD sky130_fd_pr__pfet_01v8 w=10.00 l=0.15
+XMP_B1  m1  B VDD VDD sky130_fd_pr__pfet_01v8 w=10.00 l=0.15
+XMP_B2  m2  B m1  VDD sky130_fd_pr__pfet_01v8 w=10.00 l=0.15
+XMP_C1  m2  C m1  VDD sky130_fd_pr__pfet_01v8 w=10.00 l=0.15
+XMP_A2  Y   A m2  VDD sky130_fd_pr__pfet_01v8 w=10.00 l=0.15
+XMP_C2  Y   C m2  VDD sky130_fd_pr__pfet_01v8 w=10.00 l=0.15
+.ends maj3x4
