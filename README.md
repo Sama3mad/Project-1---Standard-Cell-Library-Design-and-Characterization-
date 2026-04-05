@@ -39,5 +39,3 @@ More course files and scripts are here:
 [Project 1 — Standard Cell Library Design and Characterization](https://github.com/Sama3mad/Project-1---Standard-Cell-Library-Design-and-Characterization-.git)
 
 ---
-
-*Course project: SKY130 cells, logic check, and timing measurement.*
